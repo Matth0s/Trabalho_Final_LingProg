@@ -15,6 +15,7 @@ Necessario:
 - Ferramenta make
 - Python3
 - Python3-pip
+- Python3-dev
 - Pacote Python yfinance
 - Pacote Python pandas
 - Pacote Python numpy
@@ -31,7 +32,7 @@ sudo apt-get install -y build-essential
 
 **Comando para instalar python3 e pip:**
 ```sh
-sudo apt-get install -y python3 python3-pip
+sudo apt-get install -y python3 python3-pip python3-dev
 ```
 
 **Comando para instalar yfinance, pandas e numpy:**

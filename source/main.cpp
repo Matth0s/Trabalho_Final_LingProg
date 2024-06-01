@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*                                                                            */
 /*     Autor: Matheus Moreira do Nascimento - 119042060                       */
-/*     Tarefa Avaliada 1                                                      */
+/*     Trabalho Final                                                         */
 /*                                                                            */
 /*                        ____ Programa Principal ____                        */
 /*                                                                            */
