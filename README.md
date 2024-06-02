@@ -19,6 +19,7 @@ Necessario:
 - Pacote Python yfinance
 - Pacote Python pandas
 - Pacote Python numpy
+- Pacote Python requests
 
 **Comando para atualizar lista de pacotes:**
 ```sh
@@ -35,9 +36,9 @@ sudo apt-get install -y build-essential
 sudo apt-get install -y python3 python3-pip python3-dev
 ```
 
-**Comando para instalar yfinance, pandas e numpy:**
+**Comando para instalar yfinance, pandas, numpy e requests:**
 ```sh
-pip install yfinance pandas numpy
+pip install yfinance pandas numpy requests
 ```
 
 ## Como Compilar e Executar:

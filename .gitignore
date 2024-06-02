@@ -11,7 +11,4 @@ teste
 
 ## Configurações ##
 .vscode/
-
-## Arquivos Gerados ##
-temp/
-*.temp
+__pycache__/

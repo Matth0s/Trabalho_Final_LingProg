@@ -1,7 +1,8 @@
 #______________________________________//_______________________________________
 SRC_DIR		=	./source \
 				./test
-SRC			=	Utils.cpp
+SRC			=	Utils.cpp \
+				Externo.cpp
 SRC_MAIN	=	main.cpp
 SRC_TESTE	=	teste_main.cpp
 
@@ -14,7 +15,8 @@ PY_VERSION	=	$(shell python3 --version | cut -d " " -f2 | cut -d "." -f1,2)
 
 INCD_DIR	=	-I ./include \
 				-I /usr/include/python${PY_VERSION}
-INCD		=	Utils.h
+INCD		=	Utils.h \
+				Externo.h
 #______________________________________//_______________________________________
 vpath %.cpp $(SRC_DIR)
 vpath %.h $(INCD_DIR)
@@ -23,7 +25,7 @@ TARGET		=	main
 
 TESTE		=	teste
 
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -std=c++11 -fsanitize=address
 
 PY_LIB_PATH	=	/usr/lib/python${PY_VERSION}/config-${PY_VERSION}-x86_64-linux-gnu/
 
@@ -36,7 +38,7 @@ RM			=	rm -rf
 all:			$(TARGET)
 
 $(TARGET):	$(OBJ) $(OBJ_MAIN)
-	$(CC) $(CFLAGS) $(PY_FLAGS) $(OBJ) $(OBJ_MAIN) -o $(TARGET)
+	$(CC) $(CFLAGS) $(OBJ) $(OBJ_MAIN) $(PY_FLAGS) -o $(TARGET)
 	@echo "\033[1;32m"
 	@echo "/ ************************************ \\"
 	@echo "|          Executavel Criado           |"
@@ -44,7 +46,7 @@ $(TARGET):	$(OBJ) $(OBJ_MAIN)
 	@echo "\033[0m"
 
 $(TESTE):	$(OBJ) $(OBJ_TESTE)
-	$(CC) $(CFLAGS) $(PY_FLAGS) $(OBJ) $(OBJ_TESTE) -o $(TESTE)
+	$(CC) $(CFLAGS) $(OBJ) $(OBJ_TESTE) $(PY_FLAGS) -o $(TESTE)
 	@echo "\033[1;32m"
 	@echo "/ ************************************ \\"
 	@echo "|          Executavel Criado           |"
@@ -53,7 +55,7 @@ $(TESTE):	$(OBJ) $(OBJ_TESTE)
 
 $(OBJ_DIR)/%.o:	%.cpp $(INCD)
 	mkdir -p $(OBJ_DIR)
-	$(CC) $(INCD_DIR) $(CFLAGS) $(PY_FLAGS) $< -c -o $@
+	$(CC) $(INCD_DIR) $(CFLAGS) $< -c $(PY_FLAGS) -o $@
 #______________________________________//_______________________________________
 clean:
 	$(RM) $(OBJ_DIR)
@@ -72,5 +74,6 @@ fclean:		clean
 	@echo "\033[0m"
 #______________________________________//_______________________________________
 re:			fclean all
+ret:		fclean $(TESTE)
 
-.PHONY:		all clean fclean re
+.PHONY:		all clean fclean re ret
