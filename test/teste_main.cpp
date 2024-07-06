@@ -40,9 +40,18 @@ int	main(void)
 	}
 	separador();
 	{
-		Acao acao(Externo::extrair_acao_python("PETR4"));
+		Acao acao("PETR4");
 
 		cout << acao;
+	}
+	separador();
+	{
+		Acao acao("PETR4");
+
+		acao.mostarSobreEmpresa();
+		acao.mostarInfoAcao();
+		acao.mostrarHistoricoDividendos();
+		acao.mostrarHistoricoComercial();
 	}
 	separador();
 
