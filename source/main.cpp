@@ -98,11 +98,16 @@ int main(void) {
 }
 
 // # adicionar ação na carteira
-// # remover ação carteira
+// # remover ação da carteira
 // # mostrar carteria
+
 // # Sobre ações
 // # Info ações
-// # mostrar serie historica ações
-// # mostrar serie dividendos
-// # mostrar corelação da carteira
-// # pegar ação com maior
+// # Historico Semana Ações
+// # Historico Dividendos Ações
+
+// * Calcular Indice Sharpe das Ações na Carteira
+// Calcular Rentabilidade de um determinado periodo
+// Calcular correlação dos ativos na carteiro
+// Calcular REtorno médio ativos e carteira
+// Calculçar a volatilidade dos ativos da carteira

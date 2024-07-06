@@ -2,7 +2,8 @@
 SRC_DIR		=	./source \
 				./test
 SRC			=	Utils.cpp \
-				Externo.cpp
+				Externo.cpp \
+				Acao.cpp
 SRC_MAIN	=	main.cpp
 SRC_TESTE	=	teste_main.cpp
 
@@ -16,7 +17,8 @@ PY_VERSION	=	$(shell python3 --version | cut -d " " -f2 | cut -d "." -f1,2)
 INCD_DIR	=	-I ./include \
 				-I /usr/include/python${PY_VERSION}
 INCD		=	Utils.h \
-				Externo.h
+				Externo.h \
+				Acao.h
 #______________________________________//_______________________________________
 vpath %.cpp $(SRC_DIR)
 vpath %.h $(INCD_DIR)
@@ -25,7 +27,7 @@ TARGET		=	main
 
 TESTE		=	teste
 
-CFLAGS		=	-Wall -Wextra -Werror -std=c++11 -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -std=c++11 #-fsanitize=address
 
 PY_LIB_PATH	=	/usr/lib/python${PY_VERSION}/config-${PY_VERSION}-x86_64-linux-gnu/
 
@@ -74,6 +76,12 @@ fclean:		clean
 	@echo "\033[0m"
 #______________________________________//_______________________________________
 re:			fclean all
-ret:		fclean $(TESTE)
 
-.PHONY:		all clean fclean re ret
+ret:		fclean $(TESTE)
+#______________________________________//_______________________________________
+git:
+	git add .
+	git status
+	git commit -m "$m"
+
+.PHONY:		all clean fclean re ret git

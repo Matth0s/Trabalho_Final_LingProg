@@ -1,4 +1,4 @@
-# Segundo Exercício Avaliado
+# Trabalho Final Linguagem de Programação
 
 ## Autor:
   - Nome: Matheus Moreira do Nascimento
@@ -31,7 +31,7 @@ sudo apt-get update
 sudo apt-get install -y build-essential
 ```
 
-**Comando para instalar python3 e pip:**
+**Comando para instalar python3, pip e dev:**
 ```sh
 sudo apt-get install -y python3 python3-pip python3-dev
 ```
