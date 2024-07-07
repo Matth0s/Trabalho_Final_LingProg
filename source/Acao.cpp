@@ -14,11 +14,10 @@ Acao::Acao(const Acao& src)
 	_historicoFechamentos(src._historicoFechamentos)
 {}
 
-Acao::Acao(string codigo)
+Acao::Acao(string codigo, vector<string> extracao)
 	: _codigo(codigo), _sobreEmpresa(), _infoAcao(), _historicoDividendos(),
 	 _historicoComercial(), _historicoFechamentos()
 {
-	vector<string> extracao = Externo::extrair_acao_python(codigo);
 	_extrairSobreEmpresa(extracao[0]);
 	_extrairInfoAcao(extracao[1]);
 	_extrairHistoricoDividendos(extracao[2]);
@@ -39,6 +38,11 @@ Acao&	Acao::operator=(const Acao& rhs)
 		this->_historicoFechamentos = rhs._historicoFechamentos;
 	}
 	return (*this);
+}
+
+bool	Acao::operator==(const string& codigo) const
+{
+	return (this->_codigo.compare(codigo) == 0);
 }
 
 vector<string>	Acao::_splitString(string str, char delimitador = '\n')
@@ -193,7 +197,7 @@ void	Acao::mostrarHistoricoDividendos(void) const
 	for (it = _historicoDividendos.begin(); it != _historicoDividendos.end(); it++) {
 		cout << left << "| ";
 		cout << string(10, ' ') << setw(20) << it->data;
-		cout << string(11, ' ') << fixed << setprecision(6) << it->valor;
+		cout << string(9, ' ') << "R$ " << fixed << setprecision(6) << it->valor;
 		cout << right << endl;
 	}
 	_mostrarRodape();

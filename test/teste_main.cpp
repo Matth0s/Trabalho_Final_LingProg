@@ -7,9 +7,7 @@
 /*                                                                            */
 /******************************************************************************/
 
-#include <vector>
-#include "Externo.h"
-#include "Acao.h"
+#include "Carteira.h"
 #include "Utils.h"
 
 using namespace std;
@@ -24,6 +22,7 @@ void	separador(void)
 int	main(void)
 {
 	Externo::inicializar();
+
 	separador();
 	{
 		vector<string>	resultado = Externo::extrair_acao_python("PETR4");
@@ -40,18 +39,41 @@ int	main(void)
 	}
 	separador();
 	{
-		Acao acao("PETR4");
+		try {
+			Acao acao("PET4", Externo::extrair_acao_python("PET4"));
+			cout << acao;
+		} catch (Externo::ModuloPythonError& e) {
+			cout << e.what() << endl;
+		} catch (exception& e) {
+			cout << e.what() << endl;
+		}
+	}
+	separador();
+	{
+		Acao acao("PETR4", Externo::extrair_acao_python("PETR4"));
 
 		cout << acao;
 	}
 	separador();
 	{
-		Acao acao("PETR4");
+		Acao acao("PETR4", Externo::extrair_acao_python("PETR4"));
 
 		acao.mostarSobreEmpresa();
 		acao.mostarInfoAcao();
 		acao.mostrarHistoricoDividendos();
 		acao.mostrarHistoricoComercial();
+	}
+	separador();
+	{
+		Carteira carteira;
+
+		carteira.adicionarAcao("PETR4");
+		carteira.adicionarAcao("ABEV3");
+		carteira.adicionarAcao("Teste");
+		carteira.mostrarAcoes();
+		cout << endl;
+		carteira.removerAcao("PETR4");
+		carteira.mostrarAcoes();
 	}
 	separador();
 

@@ -54,6 +54,23 @@ vector<string>	Externo::extrair_acao_python(string acao)
 						resultado.push_back(str);
 					}
 				}
+				//Executa caso ocorra uma exceção no codigo Python
+				else if (PyErr_Occurred())
+				{
+					PyObject *pyTypeEx;
+					PyObject *pyValueEx;
+					PyObject *pyTracebackEx;
+
+					// Captura e normaliza a exceção para ser extraida
+					PyErr_Fetch(&pyTypeEx, &pyValueEx, &pyTracebackEx);
+					PyErr_NormalizeException(&pyTypeEx, &pyValueEx, &pyTracebackEx);
+					if (pyValueEx)
+					{
+						//Lança a exceção coletada atravez da exception personalizada
+						throw Externo::ModuloPythonError(PyUnicode_AsUTF8(PyObject_Str(pyValueEx)));
+					}
+				}
+
 			}
 		}
 
@@ -101,4 +118,15 @@ string	Externo::extrair_selic_python(void)
 	}
 
 	return (resultado);
+}
+
+Externo::ModuloPythonError::ModuloPythonError(const string& mensagem)
+	: _mensagem(mensagem)
+{}
+
+const char* Externo::ModuloPythonError::what(void) const throw()
+{
+	if (this->_mensagem != "")
+		return (this->_mensagem.c_str());
+	return ("Ouve uma exceção inesperada no Modulo Python financa.py!");
 }

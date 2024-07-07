@@ -9,6 +9,15 @@ using namespace std;
 
 class Externo {
 
+	public:
+		class ModuloPythonError: public exception {
+			private:
+				string	_mensagem;
+			public:
+				explicit ModuloPythonError(const string& mensagem);
+				virtual const char* what(void) const throw();
+		};
+
 	private:
 		static const char		*modulo;
 

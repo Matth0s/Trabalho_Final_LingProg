@@ -1,7 +1,6 @@
 # ifndef ACAO_H
 # define ACAO_H
 
-#include "Externo.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -114,10 +113,12 @@ class Acao
 	public:
 		Acao(void);
 		Acao(const Acao& src);
-		Acao(string);
+		Acao(string codigo, vector<string> extracao);
 		~Acao(void);
 
 		Acao&	operator=(const Acao& rhs);
+
+		bool	operator==(const string& codigo) const;
 
 		string			getCodigo(void) const;
 		vector<double>	getHistorico(void) const;

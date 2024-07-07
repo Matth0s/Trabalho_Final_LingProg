@@ -20,6 +20,9 @@ def get_acao(acao_nome):
 
 	# Extraindo e preparando as informações necessarias da Ação
 	acao = yf.Ticker(f"{acao_nome}.SA")
+	# Verificação para saber se o codigo da ação passado é valido
+	if acao.history('1d').empty:
+		raise ValueError(f"O identificador '{acao_nome}' não pertence a uma ação valida!")
 	infos = acao.info
 	vDia = acao.history('5d')['Close'].to_numpy()
 	vMes = acao.history('1mo')['Close'].to_numpy()
@@ -102,7 +105,7 @@ if __name__ == '__main__':
 	print("\___________________________________________________________")
 
 	print("/¨¨¨¨   TESTE ACAO   ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨")
-	retorno = get_acao("PETR4")
+	retorno = get_acao("PET4")
 	print(f"| Tamanho da Lista: {len(retorno)}")
 	print(f"| Conteudo: \n")
 	for dado in retorno:
