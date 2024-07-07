@@ -8,7 +8,6 @@
 /******************************************************************************/
 
 #include "Carteira.h"
-#include "Utils.h"
 
 using namespace std;
 
@@ -67,13 +66,13 @@ int	main(void)
 	{
 		Carteira carteira;
 
-		carteira.adicionarAcao("PETR4");
-		carteira.adicionarAcao("ABEV3");
-		carteira.adicionarAcao("Teste");
-		carteira.mostrarAcoes();
+		carteira.adicionar("PETR4");
+		carteira.adicionar("ABEV3");
+		carteira.adicionar("Teste");
+		carteira.mostrar();
 		cout << endl;
-		carteira.removerAcao("PETR4");
-		carteira.mostrarAcoes();
+		carteira.remover("PETR4");
+		carteira.mostrar();
 	}
 	separador();
 
@@ -81,5 +80,3 @@ int	main(void)
 
 	return (0);
 }
-
-// cout << ( 1 == 1 ? "✅" : "❌");

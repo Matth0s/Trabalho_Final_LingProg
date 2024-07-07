@@ -8,6 +8,7 @@
 class Carteira
 {
 	private:
+		// this->_selic = stod(Externo::extrair_selic_python());
 		double			_selic;
 		vector<Acao>	_acoes;
 
@@ -15,9 +16,14 @@ class Carteira
 		Carteira(void);
 		~Carteira(void);
 
-		void	adicionarAcao(string codigoAcao);
-		void	mostrarAcoes(void);
-		void	removerAcao(string codigoAcao);
+		/* Exibe o codigo de todas as ações que estão na carteira */
+		void	mostrar(void);
+		/* Adiciona uma nova ação na carteira */
+		void	adicionar(string codigoAcao);
+		/* Busca uma determinada ação na carteira */
+		Acao*	buscar(string codigoAcao);
+		/* Remove uma ação da carteira */
+		void	remover(string codigoAcao);
 };
 
 # endif

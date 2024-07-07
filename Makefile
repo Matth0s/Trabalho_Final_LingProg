@@ -1,8 +1,7 @@
 #______________________________________//_______________________________________
 SRC_DIR		=	./source \
 				./test
-SRC			=	Utils.cpp \
-				Externo.cpp \
+SRC			=	Externo.cpp \
 				Acao.cpp \
 				Carteira.cpp
 SRC_MAIN	=	main.cpp
@@ -17,8 +16,7 @@ PY_VERSION	=	$(shell python3 --version | cut -d " " -f2 | cut -d "." -f1,2)
 
 INCD_DIR	=	-I ./include \
 				-I /usr/include/python${PY_VERSION}
-INCD		=	Utils.h \
-				Externo.h \
+INCD		=	Externo.h \
 				Acao.h \
 				Carteira.h
 #______________________________________//_______________________________________
@@ -34,6 +32,8 @@ CFLAGS		=	-Wall -Wextra -Werror -std=c++11 #-fsanitize=address
 PY_LIB_PATH	=	/usr/lib/python${PY_VERSION}/config-${PY_VERSION}-x86_64-linux-gnu/
 
 PY_FLAGS	=	-L $(PY_LIB_PATH) -lpython$(PY_VERSION)
+
+PY_CACHE	=	./py_source/__pycache__
 
 CC			=	g++
 
@@ -70,7 +70,7 @@ clean:
 	@echo "\033[0m"
 
 fclean:		clean
-	$(RM) $(TARGET) $(TESTE)
+	$(RM) $(TARGET) $(TESTE) $(PY_CACHE)
 	@echo "\033[1;31m"
 	@echo "/ ************************************ \\"
 	@echo "|         Executavel Deletado          |"
