@@ -9,7 +9,7 @@ void	Carteira::mostrar(void)
 	stringstream	out;
 	string			linha;
 
-	cout << "\n/¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\\\n";
+	cout << "\n/¨¨¨¨¨¨¨¨¨¨  ACOES  ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\\\n";
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
 		if (i % 4 == 0)  {
 			out << left << "|  ";

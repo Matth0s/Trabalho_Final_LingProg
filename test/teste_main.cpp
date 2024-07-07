@@ -9,8 +9,6 @@
 
 #include "Carteira.h"
 
-using namespace std;
-
 void	separador(void)
 {
 	cout << "____________________________//_____________________________"

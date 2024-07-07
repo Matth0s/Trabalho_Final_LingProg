@@ -3,7 +3,8 @@ SRC_DIR		=	./source \
 				./test
 SRC			=	Externo.cpp \
 				Acao.cpp \
-				Carteira.cpp
+				Carteira.cpp \
+				Menu.cpp
 SRC_MAIN	=	main.cpp
 SRC_TESTE	=	teste_main.cpp
 
@@ -18,7 +19,8 @@ INCD_DIR	=	-I ./include \
 				-I /usr/include/python${PY_VERSION}
 INCD		=	Externo.h \
 				Acao.h \
-				Carteira.h
+				Carteira.h \
+				Menu.h
 #______________________________________//_______________________________________
 vpath %.cpp $(SRC_DIR)
 vpath %.h $(INCD_DIR)
