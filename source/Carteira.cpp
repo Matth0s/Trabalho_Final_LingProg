@@ -77,3 +77,33 @@ void	Carteira::remover(string codigoAcao)
 			 << endl;
 	}
 }
+
+void	Carteira::rentabilidade(void)
+{
+	cout << "Rentabilidade" << endl;
+}
+
+void	Carteira::retornoMedio(void)
+{
+	cout << "Retorno Medio dos Ativos" << endl;
+}
+
+void	Carteira::riscoMedio(void)
+{
+	cout << "Risco Medio dos Ativos" << endl;
+}
+
+void	Carteira::indiceSharpe(void)
+{
+	cout << "Indice Sharpe dos Ativos" << endl;
+}
+
+void	Carteira::correlacao(void)
+{
+	cout << "Correlacao dos Ativos" << endl;
+}
+
+void	Carteira::carteiraOtima(void)
+{
+	cout << "Carteira Otima" << endl;
+}

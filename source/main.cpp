@@ -9,7 +9,7 @@
 
 #include "Menu.h"
 
-void subMenu(Acao* acao)
+void menuDetalhes(Acao* acao)
 {
 	string comando;
 
@@ -18,18 +18,51 @@ void subMenu(Acao* acao)
 
 	while (true) {
 
-		Menu::exibirSubMenu(acao->getCodigo());
+		Menu::exibirMenuDetalhes(acao->getCodigo());
 		cout << "# Insira o comando: ";
 		getline(cin, comando);
 
-		if (!comando.compare("0")) {
+		if (!comando.compare("1")) {
 			acao->mostarSobreEmpresa();
-		} else if (!comando.compare("1")) {
-			acao->mostarInfoAcao();
 		} else if (!comando.compare("2")) {
-			acao->mostrarHistoricoDividendos();
+			acao->mostarInfoAcao();
 		} else if (!comando.compare("3")) {
+			acao->mostrarHistoricoDividendos();
+		} else if (!comando.compare("4")) {
 			acao->mostrarHistoricoComercial();
+		} else if (!comando.compare("9")) {
+			break;
+		} else {
+			Menu::comandoInvalido();
+		}
+
+		cout << "Aperte Enter para continuar...";
+		getline(cin, comando);
+	}
+}
+
+void menuEstatisticas(Carteira& carteira)
+{
+	string comando;
+
+	while (true) {
+
+		Menu::exibirMenuEstatisticas();
+		cout << "# Insira o comando: ";
+		getline(cin, comando);
+
+		if (!comando.compare("1")) {
+			carteira.rentabilidade();
+		} else if (!comando.compare("2")) {
+			carteira.retornoMedio();
+		} else if (!comando.compare("3")) {
+			carteira.riscoMedio();
+		} else if (!comando.compare("4")) {
+			carteira.indiceSharpe();
+		} else if (!comando.compare("5")) {
+			carteira.correlacao();
+		} else if (!comando.compare("6")) {
+			carteira.carteiraOtima();
 		} else if (!comando.compare("9")) {
 			break;
 		} else {
@@ -56,25 +89,17 @@ int main(void)
 		cout << "# Insira o comando: ";
 		getline(cin, comando);
 
-		if (!comando.compare("0")) {
-			Menu::opcao0(carteira);
-		} else if (!comando.compare("1")) {
-			// Exemplos: PETR4 VALE3 ITUB4 BBDC4 ABEV3 B3SA3 BBAS3 PETR3 ITSA4 JBSS3
+		if (!comando.compare("1")) {
 			Menu::opcao1(carteira);
 		} else if (!comando.compare("2")) {
+			// Exemplos: PETR4 VALE3 ITUB4 BBDC4 ABEV3 B3SA3 BBAS3 PETR3 ITSA4 JBSS3
 			Menu::opcao2(carteira);
 		} else if (!comando.compare("3")) {
-			subMenu(Menu::opcao3(carteira));
+			Menu::opcao3(carteira);
 		} else if (!comando.compare("4")) {
-			Menu::opcao4(carteira);
+			menuDetalhes(Menu::opcao4(carteira));
 		} else if (!comando.compare("5")) {
-			Menu::opcao5(carteira);
-		} else if (!comando.compare("6")) {
-			Menu::opcao6(carteira);
-		} else if (!comando.compare("7")) {
-			Menu::opcao7(carteira);
-		} else if (!comando.compare("8")) {
-			Menu::opcao8(carteira);
+			menuEstatisticas(carteira);
 		} else if (!comando.compare("9")) {
 			Menu::encerrarPrograma();
 			break;

@@ -24,6 +24,13 @@ class Carteira
 		Acao*	buscar(string codigoAcao);
 		/* Remove uma ação da carteira */
 		void	remover(string codigoAcao);
+
+		void	rentabilidade(void);
+		void	retornoMedio(void);
+		void	riscoMedio(void);
+		void	indiceSharpe(void);
+		void	correlacao(void);
+		void	carteiraOtima(void);
 };
 
 # endif

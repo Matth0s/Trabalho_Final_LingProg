@@ -19,15 +19,11 @@ void	Menu::exibirMenuPrincipal(void)
 	cout << "|¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨|\n";
 	cout << "|    Digite o numero do comando desejado:    |\n";
 	cout << "|                                            |\n";
-	cout << "|    0 - Mostrar Acao                        |\n";
-	cout << "|    1 - Adicionar Acao                      |\n";
-	cout << "|    2 - Remover Acao                        |\n";
-	cout << "|    3 - Ver Mais                            |\n";
-	cout << "|    4 - Indice Sharpe dos Ativos            |\n";
-	cout << "|    5 - Rentabilidade por Periodo           |\n";
-	cout << "|    6 - Correlacao dos Ativos               |\n";
-	cout << "|    7 - Retorno Medio dos Ativos            |\n";
-	cout << "|    8 - Carteira Otima                      |\n";
+	cout << "|    1 - Mostrar Acao                        |\n";
+	cout << "|    2 - Adicionar Acao                      |\n";
+	cout << "|    3 - Remover Acao                        |\n";
+	cout << "|    4 - Ver Detalhes                        |\n";
+	cout << "|    5 - Ver Estatisticas                    |\n";
 	cout << "|                                            |\n";
 	cout << "|    9 - Encerrar Programa                   |\n";
 	cout << "|____________________________________________|"
@@ -35,7 +31,7 @@ void	Menu::exibirMenuPrincipal(void)
 		 << endl;
 }
 
-void	Menu::exibirSubMenu(string codigoAcao)
+void	Menu::exibirMenuDetalhes(string codigoAcao)
 {
 	cout << endl;
 	cout << "|¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨|\n";
@@ -43,12 +39,12 @@ void	Menu::exibirSubMenu(string codigoAcao)
 		 << left << setw(8) << codigoAcao
 		 << right << "         |\n";
 	cout << "|                                            |\n";
-	cout << "|    Digite o numero do comando desejado:    |\n";
+	cout << "|    Digite o numero do detalhe desejado:    |\n";
 	cout << "|                                            |\n";
-	cout << "|    0 - Sobre a Empresa                     |\n";
-	cout << "|    1 - Informacoes da Acao                 |\n";
-	cout << "|    2 - Historico Pagamento Dividendos      |\n";
-	cout << "|    3 - Historico Ultima Semana             |\n";
+	cout << "|    1 - Sobre a Empresa                     |\n";
+	cout << "|    2 - Informacoes da Acao                 |\n";
+	cout << "|    3 - Historico Pagamento Dividendos      |\n";
+	cout << "|    4 - Historico Ultima Semana             |\n";
 	cout << "|                                            |\n";
 	cout << "|    9 - Voltar para Menu Principal          |\n";
 	cout << "|____________________________________________|"
@@ -56,12 +52,31 @@ void	Menu::exibirSubMenu(string codigoAcao)
 		 << endl;
 }
 
-void	Menu::opcao0(Carteira& carteira)
+void	Menu::exibirMenuEstatisticas(void)
+{
+	cout << endl;
+	cout << "|¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨|\n";
+	cout << "|  Digite o numero da estatistica desejado:  |\n";
+	cout << "|                                            |\n";
+	cout << "|    1 - Rentabilidade                       |\n";
+	cout << "|    2 - Retorno Medio                       |\n";
+	cout << "|    3 - Risco Medio                         |\n";
+	cout << "|    4 - Indice Sharpe                       |\n";
+	cout << "|    5 - Correlacoes de Acoes                |\n";
+	cout << "|    6 - Carteira Otima                      |\n";
+	cout << "|                                            |\n";
+	cout << "|    9 - Encerrar Programa                   |\n";
+	cout << "|____________________________________________|"
+		 << endl
+		 << endl;
+}
+
+void	Menu::opcao1(Carteira& carteira)
 {
 	carteira.mostrar();
 }
 
-void	Menu::opcao1(Carteira& carteira)
+void	Menu::opcao2(Carteira& carteira)
 {
 	stringstream	ss;
 	string			codigosAcoes;
@@ -78,7 +93,7 @@ void	Menu::opcao1(Carteira& carteira)
 	}
 }
 
-void	Menu::opcao2(Carteira& carteira)
+void	Menu::opcao3(Carteira& carteira)
 {
 	stringstream	ss;
 	string			codigosAcoes;
@@ -95,7 +110,7 @@ void	Menu::opcao2(Carteira& carteira)
 	}
 }
 
-Acao*	Menu::opcao3(Carteira& carteira)
+Acao*	Menu::opcao4(Carteira& carteira)
 {
 	string	codigoAcao;
 
@@ -104,41 +119,6 @@ Acao*	Menu::opcao3(Carteira& carteira)
 	cout << endl;
 
 	return (carteira.buscar(codigoAcao));
-}
-
-void	Menu::opcao4(Carteira& carteira)
-{
-	(void) carteira;
-
-	cout << "Indice Sharpe dos Ativos" << endl;
-}
-
-void	Menu::opcao5(Carteira& carteira)
-{
-	(void) carteira;
-
-	cout << "Rentabilidade por Periodo" << endl;
-}
-
-void	Menu::opcao6(Carteira& carteira)
-{
-	(void) carteira;
-
-	cout << "Correlacao dos Ativos" << endl;
-}
-
-void	Menu::opcao7(Carteira& carteira)
-{
-	(void) carteira;
-
-	cout << "Retorno Medio dos Ativos" << endl;
-}
-
-void	Menu::opcao8(Carteira& carteira)
-{
-	(void) carteira;
-
-	cout << "Carteira Otima" << endl;
 }
 
 void	Menu::encerrarPrograma(void)
