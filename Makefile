@@ -4,7 +4,8 @@ SRC_DIR		=	./source \
 SRC			=	Externo.cpp \
 				Acao.cpp \
 				Carteira.cpp \
-				Menu.cpp
+				Menu.cpp \
+				Matematica.cpp
 SRC_MAIN	=	main.cpp
 SRC_TESTE	=	teste_main.cpp
 
@@ -20,7 +21,8 @@ INCD_DIR	=	-I ./include \
 INCD		=	Externo.h \
 				Acao.h \
 				Carteira.h \
-				Menu.h
+				Menu.h \
+				Matematica.h
 #______________________________________//_______________________________________
 vpath %.cpp $(SRC_DIR)
 vpath %.h $(INCD_DIR)

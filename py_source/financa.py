@@ -1,5 +1,6 @@
 import yfinance as yf
 import requests as rq
+import numpy as np
 
 def get_selic():
 
@@ -29,7 +30,7 @@ def get_acao(acao_nome):
 	vAno = acao.history('1y')['Close'].to_numpy()
 	divs = acao.dividends
 	historico_semana = acao.history('5d')
-	historico_fechamento = acao.history('2y')['Close'].to_numpy()
+	historico_fechamento = acao.history('5y')['Close'].to_numpy()
 
 
 	# Registra informações referentes a empresa
@@ -92,7 +93,7 @@ def get_acao(acao_nome):
 
 	# Registra as informações de fechamento da ação nos ultimos 5 anos
 	retorno.append("")
-	for valor in historico_fechamento[::-1]:
+	for valor in historico_fechamento:
 		retorno[-1] += f"{valor:.4f} "
 
 	return retorno
