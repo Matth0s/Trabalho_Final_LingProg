@@ -92,7 +92,7 @@ int main(void)
 		if (!comando.compare("1")) {
 			Menu::opcao1(carteira);
 		} else if (!comando.compare("2")) {
-			// Exemplos: PETR4 VALE3 ITUB4 BBDC4 ABEV3 B3SA3 BBAS3 ITSA4 JBSS3
+			// Exemplos: PETR4 ITUB4 VALE3 WEGE3 ABEV3 B3SA3 BPAC11 BBDC3 ITSA4 SANB11 ELET3 VIVT3 SUZB3 JBSS3
 			Menu::opcao2(carteira);
 		} else if (!comando.compare("3")) {
 			Menu::opcao3(carteira);

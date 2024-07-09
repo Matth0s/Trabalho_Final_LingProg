@@ -220,7 +220,18 @@ void	Carteira::indiceSharpe(void) const
 	vector<double>			serieMedias(this->_acoes.size());
 	vector<double>			sharpes(this->_acoes.size() + 1);
 	double					sharpeCarteira = 0;
-	double					selic = stod(Externo::extrair_selic_python()) / 100;
+	double					selic = 0.00039270; //Taxa selic a.d. em 08/07/2024
+
+	if (this->_acoes.size()) {
+		try {
+			selic = stod(Externo::extrair_selic_python()) / 100;
+		} catch(exception& e) {
+			cerr << endl;
+			cerr << "Erro ao coletar selic atual: " << e.what() << endl;
+			cerr << "Para fins de calculo, será utilizado o valor:" << selic << endl;
+			cerr << endl;
+		}
+	}
 
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
 		vector<double> serie = this->_acoes.at(i).getHistorico();
@@ -250,7 +261,7 @@ void	Carteira::_mostrarMatrizCorrelacao(const vector<vector<double> >& matriz) c
 		if (i % 3 == 0)  {
 			out << left << "| ";
 		}
-		out << string(5, ' ') << i + 1 << " - "
+		out << string(4, ' ') << setw(2) << i + 1 << " - "
 			<< setw(7) << this->_acoes.at(i).getCodigo();
 		if (i % 3 == 2 || i == this->_acoes.size() - 1) {
 			getline(out, linha);
@@ -365,7 +376,20 @@ void	Carteira::carteiraOtima(void) const
 	vector<double>			serieRentabilidade(this->_acoes.size());
 	vector<double>			melhoresPesos(this->_pesos);
 	double					melhorSharpe = 0;
-	double					selic = stod(Externo::extrair_selic_python()) / 100;
+	double					selic = 0.00039270; //Taxa selic a.d. em 08/07/2024
+
+	if (this->_acoes.size()) {
+		try {
+			selic = stod(Externo::extrair_selic_python()) / 100;
+		} catch(exception& e) {
+			cerr << endl;
+			cerr << "Erro ao coletar selic atual: " << e.what() << endl;
+			cerr << "Para fins de calculo, será utilizado o valor:" << selic << endl;
+			cerr << endl;
+		}
+
+		cout << "\nSimulando..." << endl;
+	}
 
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
 		vector<double> serie = this->_acoes.at(i).getHistorico();

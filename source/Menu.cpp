@@ -26,7 +26,7 @@ void	Menu::exibirMenuPrincipal(void)
 	cout << "|    5 - Ver Detalhes Acoes                  |\n";
 	cout << "|    6 - Ver Estatisticas Carteira           |\n";
 	cout << "|                                            |\n";
-	cout << "|    9 - Encerrar Programa                   |\n";
+	cout << "|    9 - Voltar para Menu Principal          |\n";
 	cout << "|____________________________________________|"
 		 << endl
 		 << endl;

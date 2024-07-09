@@ -31,7 +31,7 @@ TARGET		=	main
 
 TESTE		=	teste
 
-CFLAGS		=	-Wall -Wextra -Werror -std=c++11 #-fsanitize=address
+CFLAGS		=	-std=c++11 -Wall -Wextra -Werror #-fsanitize=address
 
 PY_LIB_PATH	=	/usr/lib/python${PY_VERSION}/config-${PY_VERSION}-x86_64-linux-gnu/
 

@@ -30,7 +30,8 @@ Acao::~Acao(void)
 
 Acao&	Acao::operator=(const Acao& rhs)
 {
-	if (this == &rhs) {
+	if (this != &rhs) {
+		this->_codigo = rhs._codigo;
 		this->_sobreEmpresa = rhs._sobreEmpresa;
 		this->_infoAcao = rhs._infoAcao;
 		this->_historicoDividendos = rhs._historicoDividendos;
