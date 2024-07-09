@@ -92,13 +92,15 @@ int main(void)
 		if (!comando.compare("1")) {
 			Menu::opcao1(carteira);
 		} else if (!comando.compare("2")) {
-			// Exemplos: PETR4 VALE3 ITUB4 BBDC4 ABEV3 B3SA3 BBAS3 PETR3 ITSA4 JBSS3
+			// Exemplos: PETR4 VALE3 ITUB4 BBDC4 ABEV3 B3SA3 BBAS3 ITSA4 JBSS3
 			Menu::opcao2(carteira);
 		} else if (!comando.compare("3")) {
 			Menu::opcao3(carteira);
 		} else if (!comando.compare("4")) {
-			menuDetalhes(Menu::opcao4(carteira));
+			Menu::opcao4(carteira);
 		} else if (!comando.compare("5")) {
+			menuDetalhes(Menu::opcao5(carteira));
+		} else if (!comando.compare("6")) {
 			menuEstatisticas(carteira);
 		} else if (!comando.compare("9")) {
 			Menu::encerrarPrograma();

@@ -6,6 +6,7 @@
 #include "Acao.h"
 #include <algorithm>
 
+
 class Carteira
 {
 	private:
@@ -13,10 +14,18 @@ class Carteira
 		vector<double>	_pesos;
 
 		/* Ajusta os pesos quando ocorre uma alteração nas ações da carteira. */
-		void	_ajustarPesos(void);
+		void	_ajustarPesos(int idx);
 		/* Auxilia na exibição formatada dos dados calculados nas estatisticas. */
 		void	_mostrarEstatisticas(string texto, int precisao,
 									const vector<double>& estatisticas) const;
+		/* Auxilia na exibição formatada da matriz de correlações das ações. */
+		void	_mostrarMatrizCorrelacao(const vector<vector<double> >& matriz) const;
+		/* Auxilia na exibição formatada dos pesos e estatisticas da Carteira Otima. */
+		void	_mostrarCarteriraOtima(const vector<vector<double> >& serieRetornos,
+											const vector<double>& serieMedias,
+											const vector<double>& serieRentabilidade,
+											const vector<double>& pesos,
+											const double& melhorSharpe) const;
 
 	public:
 		Carteira(void);
@@ -30,6 +39,8 @@ class Carteira
 		Acao*	buscar(string codigoAcao);
 		/* Remove uma ação da carteira. */
 		void	remover(string codigoAcao);
+		/* Configura o peso de cada ação na carteira. */
+		void	setPesos(vector<double> pesos);
 
 		void	rentabilidade(void) const;
 		void	retornoMedio(void) const;

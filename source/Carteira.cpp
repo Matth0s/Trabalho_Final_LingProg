@@ -4,9 +4,24 @@ Carteira::Carteira(void) : _acoes(), _pesos() {}
 
 Carteira::~Carteira(void) {}
 
-void	Carteira::_ajustarPesos(void)
+void	Carteira::_ajustarPesos(int idx)
 {
-	this->_pesos = vector<double>(this->_acoes.size(), (1 / (double)this->_acoes.size()));
+	double	pesosSize = this->_pesos.size();
+	double	acoesSize = this->_acoes.size();
+
+	// Indices menores que 0 indicam que objetos não foram removidos, mas sim
+	// acrescentados
+	if (idx < 0) {
+		for (unsigned i = 0; i < pesosSize; i++) {
+			this->_pesos.at(i) *= (pesosSize / acoesSize);
+		}
+		this->_pesos.push_back(1 / acoesSize);
+
+	// Indices maiores ou iguais a 0 indicam que ações foram removidas
+	} else {
+		this->_pesos.erase(this->_pesos.begin() + idx);
+		this->_pesos = Matematica::normalizarVetor(this->_pesos);
+	}
 }
 
 void	Carteira::mostrar(void) const
@@ -14,20 +29,23 @@ void	Carteira::mostrar(void) const
 	stringstream	out;
 	string			linha;
 
-	cout << "\n/¨¨¨¨¨¨¨¨¨¨  ACOES  ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\\\n";
+	cout << "\n/¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨  CARTEIRA  ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\\\n";
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
-		if (i % 4 == 0)  {
-			out << left << "|  ";
+		if (i % 2 == 0)  {
+			out << left << "| ";
 		}
-		out << string(2, ' ') << setw(8) << this->_acoes.at(i).getCodigo();
-		if (i % 4 == 3 || i == this->_acoes.size() - 1) {
+		out << string(3, ' ') << setw(8) << this->_acoes.at(i).getCodigo()
+			<< " : "
+			<< setw(6) << fixed << setprecision(2) << this->_pesos.at(i) * 100
+			<< setw(6) << " %";
+		if (i % 2 == 1 || i == this->_acoes.size() - 1) {
 			getline(out, linha);
-			cout << left << setw(44) << linha << right << " |\n";
+			cout << left << setw(54) << linha << right << " |\n";
 			out.str("");
 			out.clear();
 		}
 	}
-	cout << "\\" << string(44, '_') << "/\n" << endl;
+	cout << "\\" << string(54, '_') << "/\n" << endl;
 }
 
 void	Carteira::adicionar(string codigoAcao)
@@ -43,7 +61,7 @@ void	Carteira::adicionar(string codigoAcao)
 			*it = Acao(codigoAcao, extracao);
 		else {
 			this->_acoes.push_back(Acao(codigoAcao, extracao));
-			_ajustarPesos();
+			_ajustarPesos(-1);
 		}
 
 		cout << "Ação '" << codigoAcao << "' adicionada a carteira com sucesso!"
@@ -73,17 +91,37 @@ Acao*	Carteira::buscar(string codigoAcao)
 void	Carteira::remover(string codigoAcao)
 {
 	vector<Acao>::iterator	it;
+	unsigned				idx;
 
 	it = find(this->_acoes.begin(), this->_acoes.end(), codigoAcao);
 	if (it != this->_acoes.end()) {
-		this->_acoes.erase(it);
+		idx = it - this->_acoes.begin();
+		this->_acoes.erase(this->_acoes.begin());
 
+		_ajustarPesos(idx);
 		cout << "Ação '" << codigoAcao << "' removida da carteira com sucesso!"
 			 << endl;
 	} else {
 		cerr << "A carteira não possui uma Ação com o identificar: " << codigoAcao
 			 << endl;
 	}
+}
+
+void	Carteira::setPesos(vector<double> pesos)
+{
+	double	pesosSize = pesos.size();
+	double	acoesSize = this->_acoes.size();
+
+	// Completa o vetor de pesos caso seja menor que o vetor de ações
+	for (unsigned i = pesosSize; i < acoesSize; i++) {
+		pesos.push_back(1 / acoesSize);
+	}
+	// Descarta os elementos extras do vetor peso, caso ele seja maior que o vetor de ações
+	pesos.resize(acoesSize);
+
+	this->_pesos = Matematica::normalizarVetor(pesos);
+
+	cout << "Pesos configurados com sucesso!" << endl;
 }
 
 void	Carteira::_mostrarEstatisticas(string texto, int precisao,
@@ -101,9 +139,9 @@ void	Carteira::_mostrarEstatisticas(string texto, int precisao,
 		if (i % 2 == 0)  {
 			out << left << "| ";
 		}
-		out << string(4, ' ') << setw(8) << this->_acoes.at(i).getCodigo()
+		out << string(2, ' ') << setw(8) << this->_acoes.at(i).getCodigo()
 			<< " :  "
-			<< setw(10) << fixed << setprecision(precisao) << estatisticas.at(i);
+			<< setw(12) << fixed << setprecision(precisao) << estatisticas.at(i);
 		if (i % 2 == 1 || i == this->_acoes.size() - 1) {
 			getline(out, linha);
 			cout << left << setw(54) << linha << right << " |\n";
@@ -124,23 +162,23 @@ void	Carteira::_mostrarEstatisticas(string texto, int precisao,
 
 void	Carteira::rentabilidade(void) const
 {
-	vector<double>	rentabilidades;
+	vector<double>	rentabilidades(this->_acoes.size() + 1);
 	double			rentabilidadeCarteira = 0;
 
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
 		vector<double> serie = this->_acoes.at(i).getHistorico();
 
-		rentabilidades.push_back((serie.back() - serie.front()) * 100 / serie.front());
+		rentabilidades[i] = (serie.back() - serie.front()) * 100 / serie.front();
 	}
 	rentabilidadeCarteira = Matematica::produtoVetorial(this->_pesos, rentabilidades);
-	rentabilidades.push_back(rentabilidadeCarteira);
+	rentabilidades[this->_acoes.size()] = rentabilidadeCarteira;
 
 	_mostrarEstatisticas("RENTABILIDADE %", 2, rentabilidades);
 }
 
 void	Carteira::retornoMedio(void) const
 {
-	vector<double>	retornosMedios;
+	vector<double>	retornosMedios(this->_acoes.size() + 1);
 	double			retornoMedioCarteira = 0;
 
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
@@ -148,18 +186,18 @@ void	Carteira::retornoMedio(void) const
 		vector<double> retornos = Matematica::vetorRetorno(serie);
 		double media = Matematica::media(retornos);
 
-		retornosMedios.push_back(media * 10000);
+		retornosMedios[i] = media * 10000;
 	}
 	retornoMedioCarteira = Matematica::produtoVetorial(this->_pesos, retornosMedios);
-	retornosMedios.push_back(retornoMedioCarteira);
+	retornosMedios[this->_acoes.size()] = retornoMedioCarteira;
 
 	_mostrarEstatisticas("RETORNO MEDIO 1e-4", 7, retornosMedios);
 }
 
 void	Carteira::riscoMedio(void) const
 {
-	vector<vector<double> >	serieRetornos;
-	vector<double>			riscosMedios;
+	vector<vector<double> >	serieRetornos(this->_acoes.size());
+	vector<double>			riscosMedios(this->_acoes.size() + 1);
 	double					riscoMedioCarteira = 0;
 
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
@@ -167,20 +205,20 @@ void	Carteira::riscoMedio(void) const
 		vector<double> retornos = Matematica::vetorRetorno(serie);
 		double desvioPadrao = Matematica::desvioPadrao(retornos);
 
-		serieRetornos.push_back(retornos);
-		riscosMedios.push_back(desvioPadrao * 100);
+		serieRetornos[i] = retornos;
+		riscosMedios[i] = desvioPadrao * 100;
 	}
 	riscoMedioCarteira = Matematica::correlacao(this->_pesos, serieRetornos);
-	riscosMedios.push_back(riscoMedioCarteira * 100);
+	riscosMedios[this->_acoes.size()] = (riscoMedioCarteira * 100);
 
 	_mostrarEstatisticas("RISCO MEDIO 1e-2", 7, riscosMedios);
 }
 
 void	Carteira::indiceSharpe(void) const
 {
-	vector<vector<double> >	serieRetornos;
-	vector<double>			serieMedias;
-	vector<double>			sharpes;
+	vector<vector<double> >	serieRetornos(this->_acoes.size());
+	vector<double>			serieMedias(this->_acoes.size());
+	vector<double>			sharpes(this->_acoes.size() + 1);
 	double					sharpeCarteira = 0;
 	double					selic = stod(Externo::extrair_selic_python()) / 100;
 
@@ -190,30 +228,21 @@ void	Carteira::indiceSharpe(void) const
 		double media = Matematica::media(retornos);
 		double desvioPadrao = Matematica::desvioPadrao(retornos);
 
-		serieRetornos.push_back(retornos);
-		serieMedias.push_back(media);
-		sharpes.push_back((media - selic) * 100/ desvioPadrao);
+		serieRetornos[i] = retornos;
+		serieMedias[i] = media;
+		sharpes[i] = (media - selic) * 100/ desvioPadrao;
 	}
 	sharpeCarteira = Matematica::produtoVetorial(this->_pesos, serieMedias) - selic;
 	sharpeCarteira /= Matematica::correlacao(this->_pesos, serieRetornos);
-	sharpes.push_back(sharpeCarteira * 100);
+	sharpes[this->_acoes.size()] = sharpeCarteira * 100;
 
 	_mostrarEstatisticas("INDICE SHARPE 1e-2", 7, sharpes);
 }
 
-void	Carteira::correlacao(void) const
+void	Carteira::_mostrarMatrizCorrelacao(const vector<vector<double> >& matriz) const
 {
-	vector<vector<double> >	serieRetornos;
-	vector<vector<double> >	matrizCor;
 	stringstream			out;
 	string					linha;
-
-	for (unsigned i = 0; i < this->_acoes.size(); i++) {
-		vector<double> serie = this->_acoes.at(i).getHistorico();
-		vector<double> retornos = Matematica::vetorRetorno(serie);
-		serieRetornos.push_back(retornos);
-	}
-	matrizCor = Matematica::matrizCorrelacao(serieRetornos);
 
 	cout << "\n/¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨  CORRELACAO  ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\\\n";
 
@@ -221,8 +250,8 @@ void	Carteira::correlacao(void) const
 		if (i % 3 == 0)  {
 			out << left << "| ";
 		}
-		out << string(4, ' ') << i + 1 << " - "
-			<< setw(8) << this->_acoes.at(i).getCodigo();
+		out << string(5, ' ') << i + 1 << " - "
+			<< setw(7) << this->_acoes.at(i).getCodigo();
 		if (i % 3 == 2 || i == this->_acoes.size() - 1) {
 			getline(out, linha);
 			cout << left << setw(54) << linha << right << " |\n";
@@ -230,6 +259,7 @@ void	Carteira::correlacao(void) const
 			out.clear();
 		}
 	}
+
 	cout << "\\" << string(54, '_') << "/\n";
 
 	for (unsigned i = 0; i < this->_acoes.size(); i++) {
@@ -242,16 +272,124 @@ void	Carteira::correlacao(void) const
 			cout << right << "\n   +--";
 		cout << string(8, '-');
 	}
-	for (unsigned i = 0; i < matrizCor.size(); i++) {
+	for (unsigned i = 0; i < matriz.size(); i++) {
 		cout << "\n" << setw(2) << i + 1 << " |  ";
-		for (unsigned j = 0; j < matrizCor[i].size(); j++) {
-			cout << fixed << setprecision(4) << matrizCor[i][j] << "  ";
+		for (unsigned j = 0; j < matriz[i].size(); j++) {
+			cout << fixed << setprecision(4) << matriz[i][j] << "  ";
 		}
 	}
+
 	cout << endl << endl;
+}
+
+void	Carteira::correlacao(void) const
+{
+	vector<vector<double> >	serieRetornos(this->_acoes.size());
+	vector<vector<double> >	matrizCor;
+
+	for (unsigned i = 0; i < this->_acoes.size(); i++) {
+		vector<double> serie = this->_acoes.at(i).getHistorico();
+		vector<double> retornos = Matematica::vetorRetorno(serie);
+		serieRetornos[i] = retornos;
+	}
+	matrizCor = Matematica::matrizCorrelacao(serieRetornos);
+	_mostrarMatrizCorrelacao(matrizCor);
+}
+
+void	Carteira::_mostrarCarteriraOtima(const vector<vector<double> >& serieRetornos,
+											const vector<double>& serieMedias,
+											const vector<double>& serieRentabilidade,
+											const vector<double>& pesos,
+											const double& sharpe) const
+{
+	stringstream			out;
+	string					linha;
+
+	cout << "\n/¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨  PESOS CARTEIRA OTIMA  ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨\\\n";
+
+	for (unsigned i = 0; i < this->_acoes.size(); i++) {
+		if (i % 2 == 0)  {
+			out << left << "| ";
+		}
+		out << string(3, ' ') << setw(8) << this->_acoes.at(i).getCodigo()
+			<< " : "
+			<< setw(6) << fixed << setprecision(2) << pesos.at(i) * 100
+			<< setw(6) << " %";
+		if (i % 2 == 1 || i == this->_acoes.size() - 1) {
+			getline(out, linha);
+			cout << left << setw(54) << linha << right << " |\n";
+			out.str("");
+			out.clear();
+		}
+	}
+
+	if (this->_acoes.size()) {
+		cout << "| " << string(52, '-') << " |\n";
+
+		cout << left << "| "
+			 << string(11, ' ') << "RENTABILIDADE :  "
+			 << setw(12) << fixed << setprecision(2)
+			 << Matematica::produtoVetorial(pesos, serieRentabilidade) * 100
+			 << setw(12) << "%"
+			 << " |\n";
+
+		cout << "| "
+			 << string(11, ' ') << "RETORNO MEDIO :  "
+			 << setw(12) << fixed << setprecision(7)
+			 << Matematica::produtoVetorial(pesos, serieMedias) * 10000
+			 << setw(12) << "(1e-4)"
+			 << " |\n";
+
+		cout << "| "
+			 << string(13, ' ') << "RISCO MEDIO :  "
+			 << setw(12) << fixed << setprecision(7)
+			 << Matematica::correlacao(pesos, serieRetornos) * 100
+			 << setw(12) << "(1e-2)"
+			 << " |\n";
+
+		cout << "| "
+			 << string(11, ' ') << "INDICE SHARPE :  "
+			 << setw(12) << fixed << setprecision(7)
+			 <<  sharpe * 100
+			 << setw(12) << "(1e-2)"
+			 << right << " |\n";
+	}
+
+	cout << "\\" << string(54, '_') << "/\n" << endl;
 }
 
 void	Carteira::carteiraOtima(void) const
 {
-	cout << "\nCARTEIRA OTIMA\n" << endl;
+	vector<vector<double> >	serieRetornos(this->_acoes.size());
+	vector<double>			serieMedias(this->_acoes.size());
+	vector<double>			serieRentabilidade(this->_acoes.size());
+	vector<double>			melhoresPesos(this->_pesos);
+	double					melhorSharpe = 0;
+	double					selic = stod(Externo::extrair_selic_python()) / 100;
+
+	for (unsigned i = 0; i < this->_acoes.size(); i++) {
+		vector<double> serie = this->_acoes.at(i).getHistorico();
+		vector<double> retornos = Matematica::vetorRetorno(serie);
+		double media = Matematica::media(retornos);
+
+		serieRetornos[i] = retornos;
+		serieMedias[i] = media;
+		serieRentabilidade[i] = (serie.back() - serie.front()) / serie.front();
+	}
+
+	melhorSharpe = Matematica::produtoVetorial(melhoresPesos, serieMedias) - selic;
+	melhorSharpe /= Matematica::correlacao(melhoresPesos, serieRetornos);
+	for (unsigned i = 0; i < 30000; i++) {
+		vector<double> pesos = Matematica::vetorAleatorio(this->_acoes.size());
+		double sharpe = Matematica::produtoVetorial(pesos, serieMedias) - selic;
+		sharpe /= Matematica::correlacao(pesos, serieRetornos);
+
+		if (sharpe > melhorSharpe) {
+			melhoresPesos = pesos;
+			melhorSharpe = sharpe;
+		}
+	}
+
+	_mostrarCarteriraOtima(serieRetornos, serieMedias, serieRentabilidade,
+												melhoresPesos, melhorSharpe);
 }

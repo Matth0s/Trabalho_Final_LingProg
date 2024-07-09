@@ -14,7 +14,8 @@ class Menu
 		static void		opcao1(Carteira& carteira);
 		static void		opcao2(Carteira& carteira);
 		static void		opcao3(Carteira& carteira);
-		static Acao*	opcao4(Carteira& carteira);
+		static void		opcao4(Carteira& carteira);
+		static Acao*	opcao5(Carteira& carteira);
 
 		static void		encerrarPrograma(void);
 		static void		comandoInvalido(void);

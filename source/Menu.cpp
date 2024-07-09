@@ -19,11 +19,12 @@ void	Menu::exibirMenuPrincipal(void)
 	cout << "|¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨|\n";
 	cout << "|    Digite o numero do comando desejado:    |\n";
 	cout << "|                                            |\n";
-	cout << "|    1 - Mostrar Acao                        |\n";
+	cout << "|    1 - Mostrar Carteira                    |\n";
 	cout << "|    2 - Adicionar Acao                      |\n";
 	cout << "|    3 - Remover Acao                        |\n";
-	cout << "|    4 - Ver Detalhes                        |\n";
-	cout << "|    5 - Ver Estatisticas                    |\n";
+	cout << "|    4 - Configurar Pesos da Carteira        |\n";
+	cout << "|    5 - Ver Detalhes Acoes                  |\n";
+	cout << "|    6 - Ver Estatisticas Carteira           |\n";
 	cout << "|                                            |\n";
 	cout << "|    9 - Encerrar Programa                   |\n";
 	cout << "|____________________________________________|"
@@ -84,12 +85,10 @@ void	Menu::opcao2(Carteira& carteira)
 	cout << "# Insira os codigos das ações: ";
 	getline(cin, codigosAcoes);
 	ss << codigosAcoes;
-	while (ss.good()) {
+	while (ss.good() && ss.str().compare("\n")) {
 		ss >> codigosAcoes;
-		if (codigosAcoes.compare("\n") != 0) {
-			cout << endl;
-			carteira.adicionar(codigosAcoes);
-		}
+		cout << endl;
+		carteira.adicionar(codigosAcoes);
 	}
 }
 
@@ -101,16 +100,32 @@ void	Menu::opcao3(Carteira& carteira)
 	cout << "# Insira os codigos das ações: ";
 	getline(cin, codigosAcoes);
 	ss << codigosAcoes;
-	while (ss.good()) {
+	while (ss.good() && ss.str().compare("\n")) {
 		ss >> codigosAcoes;
-		if (codigosAcoes.compare("\n") != 0) {
-			cout << endl;
-			carteira.remover(codigosAcoes);
-		}
+		cout << endl;
+		carteira.remover(codigosAcoes);
 	}
 }
 
-Acao*	Menu::opcao4(Carteira& carteira)
+void	Menu::opcao4(Carteira& carteira)
+{
+	stringstream	ss;
+	string			linha;
+	vector<double>	pesos;
+	double			peso;
+
+	cout << "# Insira os pesos da carteira: ";
+	getline(cin, linha);
+	ss << linha;
+	while (ss.good() && ss.str().compare("\n")) {
+		ss >> peso;
+		pesos.push_back(peso);
+	}
+	cout << endl;
+	carteira.setPesos(pesos);
+}
+
+Acao*	Menu::opcao5(Carteira& carteira)
 {
 	string	codigoAcao;
 

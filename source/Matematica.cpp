@@ -1,11 +1,44 @@
 # include "Matematica.h"
 
+vector<double>	Matematica::vetorAleatorio(unsigned int size)
+{
+	vector<double>	aleatorio(size);
+	double			soma = 0;
+
+	srand(time(0));
+
+	for (unsigned i = 0; i < aleatorio.size(); i++) {
+		aleatorio[i] = rand() % 100;
+		soma += aleatorio[i];
+	}
+	for (unsigned i = 0; i < aleatorio.size(); i++) {
+		aleatorio[i] = (aleatorio[i] / soma);
+	}
+
+	return (aleatorio);
+}
+
+vector<double>	Matematica::normalizarVetor(const vector<double>& vetor)
+{
+	vector<double>	normalizado(vetor.size());
+	double			soma = 0;
+
+	for (unsigned i = 0; i < vetor.size(); i++) {
+		soma += vetor[i];
+	}
+	for (unsigned i = 0; i < vetor.size(); i++) {
+		normalizado[i] = (vetor[i] / soma);
+	}
+
+	return (normalizado);
+}
+
 vector<double>	Matematica::vetorRetorno(const vector<double>& vetor)
 {
-	vector<double> retorno;
+	vector<double> retorno(vetor.size() - 1);
 
-	for (unsigned i = 0; i < vetor.size() - 1; i ++) {
-		retorno.push_back((vetor[i+1] - vetor[i]) / vetor[i]);
+	for (unsigned i = 0; i < vetor.size() - 1; i++) {
+		retorno[i] = ((vetor[i+1] - vetor[i]) / vetor[i]);
 	}
 
 	return (retorno);
@@ -70,14 +103,14 @@ double	Matematica::covariancia(const vector<double>& vetorX,
 vector<vector<double> >	Matematica::matrizCovariancia(
 										const vector<vector<double> >& retornos)
 {
-	vector<vector<double> >	matriz;
+	vector<vector<double> >	matriz(retornos.size());
 
 	for (unsigned i = 0; i < retornos.size(); i++) {
-		vector<double>	linha;
+		vector<double>	linha(retornos.size());
 		for (unsigned j = 0; j < retornos.size(); j++) {
-			linha.push_back(Matematica::covariancia(retornos[i], retornos[j]));
+			linha[j] = Matematica::covariancia(retornos[i], retornos[j]);
 		}
-		matriz.push_back(linha);
+		matriz[i] = linha;
 	}
 
 	return (matriz);
@@ -103,17 +136,17 @@ double	Matematica::correlacao(const vector<double>& pesos,
 vector<vector<double> >	Matematica::matrizCorrelacao(
 										const vector<vector<double> >& retornos)
 {
-	vector<vector<double> >	matriz;
+	vector<vector<double> >	matriz(retornos.size());
 
 	for (unsigned i = 0; i < retornos.size(); i++) {
-		vector<double>	linha;
+		vector<double>	linha(retornos.size());
 		for (unsigned j = 0; j < retornos.size(); j++) {
 			double	covariancia = Matematica::covariancia(retornos[i], retornos[j]);
 			double	desvioPadraoI = Matematica::desvioPadrao(retornos[i]);
 			double	desvioPadraoJ = Matematica::desvioPadrao(retornos[j]);
-			linha.push_back(covariancia / (desvioPadraoI * desvioPadraoJ));
+			linha[j] = (covariancia / (desvioPadraoI * desvioPadraoJ));
 		}
-		matriz.push_back(linha);
+		matriz[i] = linha;
 	}
 
 	return (matriz);
